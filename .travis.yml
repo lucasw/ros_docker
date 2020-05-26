@@ -11,6 +11,8 @@ env:
     - DOCKER_IMAGE_TAG=melodic-ros-core-bionic
     - DOCKER_NAME=test
     - ROSCONSOLE_FORMAT="[${severity}][${time}${shortfile}:${line}${node}]:${message}"
+    - TEST0='[${severity}][${time}${shortfile}:${line}${node}]:${message}'
+    - TEST1='''[${severity}][${time}${shortfile}:${line}${node}]:${message}'''
 
 git:
   submodules: false
@@ -21,6 +23,9 @@ services:
 before_install:
   - echo "before install"
   - echo $ROSCONSOLE_FORMAT
+  - echo ${ROSCONSOLE_FORMAT}
+  - echo $TEST0
+  - echo $TEST1
   - docker pull $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
   - docker run -td -e ROSCONSOLE_FORMAT=${ROSCONSOLE_FORMAT} --name ${DOCKER_NAME} ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} tail -f /dev/null
 
