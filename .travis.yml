@@ -1,0 +1,45 @@
+sudo: required
+
+dist: xenial
+
+language: bash
+
+env:
+  global:
+    # https://registry.hub.docker.com/_/ros/
+    - DOCKER_IMAGE_NAME=melodic-ros-core-bionic
+    - DOCKER_IMAGE_TAG=latest
+    - DOCKER_NAME=test
+    - DOCKER_TAG=rosnetwork_${TRAVIS_BUILD_NUMBER}
+    - ROSCONSOLE_FORMAT="[${severity}][${time}${shortfile}:${line}${node}]:${message}"
+
+git:
+  submodules: false
+
+services:
+  - docker
+
+before_install:
+  - echo "before install"
+  - echo $ROSCONSOLE_FORMAT
+  - docker pull $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+  - docker run -td -e ROSCONSOLE_FORMAT=${ROSCONSOLE_FORMAT} --name ${DOCKER_NAME} ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
+
+install:
+  - echo "install"
+
+script:
+  - echo "script"
+  - docker exec -t ${DOCKER_NAME} ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} /bin/bash -c "echo $ROSCONSOLE_FORMAT"
+
+after_success:
+  - echo "after success"
+
+after_failure:
+  - echo "after failure"
+
+after_script:
+  - echo "after script"
+
+notifications:
+  email: false
