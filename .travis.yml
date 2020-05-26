@@ -10,8 +10,11 @@ env:
     - DOCKER_IMAGE_NAME=ros
     - DOCKER_IMAGE_TAG=melodic-ros-core-bionic
     - DOCKER_NAME=test
+    # this works
     - ROSCONSOLE_FORMAT='[${severity}][${time}${shortfile}:${line}${node}]:${message}'
+    # this doesn't work
     - TEST0="[${severity}][${time}${shortfile}:${line}${node}]:${message}"
+    # this does work
     - TEST1='''[${severity}][${time}${shortfile}:${line}${node}]:${message}'''
 
 git:
@@ -22,13 +25,17 @@ services:
 
 before_install:
   - echo "before install"
+  - pwd
+  - ls -l
+  - ls -l ..
+  - ./scripts/test.sh
   - echo $ROSCONSOLE_FORMAT
   - echo ${ROSCONSOLE_FORMAT}
   - echo $TEST0
   - echo $TEST1
   - docker pull $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
-  - docker run -td -e ROSCONSOLE_FORMAT='${ROSCONSOLE_FORMAT}' --name test0 ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} /bin/bash -c env
-  - docker run -td -e ROSCONSOLE_FORMAT='${ROSCONSOLE_FORMAT}' --name ${DOCKER_NAME} ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} tail -f /dev/null
+  # - docker run -td -e ROSCONSOLE_FORMAT='${ROSCONSOLE_FORMAT}' -v ${pwd}:/home --name ${DOCKER_NAME} ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} tail -f /dev/null
+  - docker run -td -e ROSCONSOLE_FORMAT=${ROSCONSOLE_FORMAT} -v ${pwd}:/home --name ${DOCKER_NAME} ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} tail -f /dev/null
 
 install:
   - echo "install"
@@ -36,7 +43,7 @@ install:
 script:
   - echo "script"
   - docker ps
-  - docker exec -t ${DOCKER_NAME} /bin/bash -c env && echo '$ROSCONSOLE_FORMAT'
+  - docker exec -t ${DOCKER_NAME} /bin/bash -c cd /home && ./scripts/test.sh
 
 after_success:
   - echo "after success"
