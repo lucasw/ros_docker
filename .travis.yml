@@ -13,9 +13,9 @@ env:
     # this works
     # - ROSCONSOLE_FORMAT='[${severity}][${time}${shortfile}:${line}${node}]:${message}'
     # this doesn't work
-    - ROSCONSOLE_FORMAT="[${severity}][${time}${shortfile}:${line}${node}]:${message}"
+    # - ROSCONSOLE_FORMAT="[${severity}][${time}${shortfile}:${line}${node}]:${message}"
     # this does work
-    - TEST1='''[${severity}][${time}${shortfile}:${line}${node}]:${message}'''
+    - ROSCONSOLE_FORMAT='''[${severity}][${time}${shortfile}:${line}${node}]:${message}'''
 
 git:
   submodules: false
