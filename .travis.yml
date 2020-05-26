@@ -11,9 +11,9 @@ env:
     - DOCKER_IMAGE_TAG=melodic-ros-core-bionic
     - DOCKER_NAME=test
     # this works
-    - ROSCONSOLE_FORMAT='[${severity}][${time}${shortfile}:${line}${node}]:${message}'
+    # - ROSCONSOLE_FORMAT='[${severity}][${time}${shortfile}:${line}${node}]:${message}'
     # this doesn't work
-    - TEST0="[${severity}][${time}${shortfile}:${line}${node}]:${message}"
+    - ROSCONSOLE_FORMAT="[${severity}][${time}${shortfile}:${line}${node}]:${message}"
     # this does work
     - TEST1='''[${severity}][${time}${shortfile}:${line}${node}]:${message}'''
 
@@ -31,7 +31,6 @@ before_install:
   - ./scripts/test.sh
   - echo $ROSCONSOLE_FORMAT
   - echo ${ROSCONSOLE_FORMAT}
-  - echo $TEST0
   - echo $TEST1
   - docker pull $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
   # - docker run -td -e ROSCONSOLE_FORMAT='${ROSCONSOLE_FORMAT}' -v ${pwd}:/home --name ${DOCKER_NAME} ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} tail -f /dev/null
