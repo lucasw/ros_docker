@@ -10,8 +10,8 @@ env:
     - DOCKER_IMAGE_NAME=ros
     - DOCKER_IMAGE_TAG=melodic-ros-core-bionic
     - DOCKER_NAME=test
-    - ROSCONSOLE_FORMAT="[${severity}][${time}${shortfile}:${line}${node}]:${message}"
-    - TEST0='[${severity}][${time}${shortfile}:${line}${node}]:${message}'
+    - ROSCONSOLE_FORMAT='[${severity}][${time}${shortfile}:${line}${node}]:${message}'
+    - TEST0="[${severity}][${time}${shortfile}:${line}${node}]:${message}"
     - TEST1='''[${severity}][${time}${shortfile}:${line}${node}]:${message}'''
 
 git:
