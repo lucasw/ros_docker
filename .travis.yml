@@ -27,7 +27,8 @@ before_install:
   - echo $TEST0
   - echo $TEST1
   - docker pull $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
-  - docker run -td -e ROSCONSOLE_FORMAT='${ROSCONSOLE_FORMAT}' --name ${DOCKER_NAME} ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} env && tail -f /dev/null
+  - docker run -td -e ROSCONSOLE_FORMAT='${ROSCONSOLE_FORMAT}' --name ${DOCKER_NAME} ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} env
+  - docker run -td -e ROSCONSOLE_FORMAT='${ROSCONSOLE_FORMAT}' --name ${DOCKER_NAME} ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} tail -f /dev/null
 
 install:
   - echo "install"
