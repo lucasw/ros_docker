@@ -22,14 +22,15 @@ before_install:
   - echo "before install"
   - echo $ROSCONSOLE_FORMAT
   - docker pull $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
-  - docker run -td -e ROSCONSOLE_FORMAT=${ROSCONSOLE_FORMAT} --name ${DOCKER_NAME} ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
+  - docker run -td -e ROSCONSOLE_FORMAT=${ROSCONSOLE_FORMAT} --name ${DOCKER_NAME} ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} tail -f /dev/null
 
 install:
   - echo "install"
 
 script:
   - echo "script"
-  - docker exec -t ${DOCKER_NAME} ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} /bin/bash -c "echo $ROSCONSOLE_FORMAT"
+  - docker ps
+  - docker exec -t ${DOCKER_NAME} /bin/bash -c "echo $ROSCONSOLE_FORMAT"
 
 after_success:
   - echo "after success"
